@@ -80,9 +80,9 @@ BroadlinkA1.prototype.getDeviceData = function(callback) {
 }
 function onA1Get(data) {
     A1Data = data;
-    // console.log(">>>>>>>>"+data['airQuality']+"<<<<<<<");
+    console.log(">>>>>>>>"+JSON.stringify(data)+"<<<<<<<");
     eventEmitter.emit("temperature",data['temperature']);
-    eventEmitter.emit("light",data['light']);
+    // eventEmitter.emit("light",data['light']);
     eventEmitter.emit("humidity",data['humidity']);
     eventEmitter.emit("airQuality",parseInt(data['airQuality'],10)+1);
 }
