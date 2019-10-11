@@ -1,0 +1,31 @@
+{
+  "name": "homebridge-broadlink-a1",
+  "version": "0.0.1",
+  "description": "Broadlink e-Air plugin",
+  "license": "ISC",
+  "keywords": [
+    "homebridge-plugin",
+    "broadlink",
+    "e-Air",
+    "a1"
+  ],
+  "engines": {
+    "node": ">=7.6.0",
+    "homebridge": ">=0.2.0"
+  },
+  "author": {
+    "name": "redelva"
+  },
+  "dependencies": {
+    "broadlink-js-smth": "^1.0.8",
+    "chai": "^4.1.2",
+    "github-version-checker": "^2.1.2",
+    "homebridge-platform-helper": "^1.0.5",
+    "ping": "^0.2.2",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "hap-nodejs": "^0.5.0",
+    "mocha": "^6.2.1"
+  }
+}
