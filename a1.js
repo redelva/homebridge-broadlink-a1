@@ -3,17 +3,18 @@ const { getDevice } = require('./helpers/getDevice');
 const HAPServerStatus = require("./HAPServerStatus").HAPServerStatus;
 
 const classTypes = {
-    'temperature': "温度",
-    'light': "光线",
-    'humidity': "湿度",
-    'airQuality': "空气质量"
+    'temperature': "Temperature Sensor",
+    'light': "Illuminance Sensor",
+    'humidity': "Humidity Sensor",
+    'airQuality': "AirQuality Sensor",
+    'noise': "Noise Sensor:
   }
 var events = require('events');
   // 创建 eventEmitter 对象
 var eventEmitter = new events.EventEmitter();
 
-var A1Data = {"temperature":"0","light":"0","humidity":"0","airQuality":"0"};
-function BroadlinkA1(log, config, api,sensorType) {
+var A1Data = {"temperature":"0","light":"0","humidity":"0","airQuality":"0","noise":"0"};
+function BroadlinkA1(log, config, api, sensorType) {
     var Service = global.Service;
     var Characteristic = global.Characteristic;
     this.log = log;
@@ -27,6 +28,7 @@ function BroadlinkA1(log, config, api,sensorType) {
     this.airQualitySensorService = new Service.AirQualitySensor(this.name);
     this.humiditySensorService = new Service.HumiditySensor(this.name);
     this.lightSensorService = new Service.LightSensor(this.name);
+    this.noiseSensorService = new Service.NoiseSensor(this.name);
 
     this.temperatureService.getCharacteristic(Characteristic.CurrentTemperature)
         .on('get', this.getDeviceData.bind(this));
@@ -38,6 +40,9 @@ function BroadlinkA1(log, config, api,sensorType) {
         .on('get', this.getDeviceData.bind(this));
 
     this.lightSensorService.getCharacteristic(Characteristic.CurrentAmbientLightLevel)
+    .on('get', this.getDeviceData.bind(this));
+    
+    this.noiseSensorService.getCharacteristic(Characteristic.CurrentNoiseLevel)
     .on('get', this.getDeviceData.bind(this));
 
     this.accessoryInformationService = new Service.AccessoryInformation()
@@ -82,9 +87,10 @@ function onA1Get(data) {
     A1Data = data;
     console.log(">>>>>>>>"+JSON.stringify(data)+"<<<<<<<");
     eventEmitter.emit("temperature",data['temperature']);
-    // eventEmitter.emit("light",data['light']);
+    eventEmitter.emit("light",parseInt(data['light'],10)+1);
     eventEmitter.emit("humidity",data['humidity']);
     eventEmitter.emit("airQuality",parseInt(data['airQuality'],10)+1);
+    eventEmitter.emit("airQuality",parseInt(data['noise'],10)+1);
 }
 BroadlinkA1.prototype.getServices = function() {
     if(this.sensorType == "temperature"){
@@ -95,7 +101,8 @@ BroadlinkA1.prototype.getServices = function() {
         return [this.humiditySensorService,this.accessoryInformationService];
     }else if(this.sensorType == "airQuality"){
         return [this.airQualitySensorService,this.accessoryInformationService];
-    }
+    }else if(this.sensorType == "noise"){
+        return [this.noiseSensorService,this.accessoryInformationService];
 }
 
 module.exports = BroadlinkA1;
