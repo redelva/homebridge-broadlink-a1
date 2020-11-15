@@ -14,9 +14,10 @@ BroadlinkA1Platform.prototype.accessories = function(callback){
     // 构造三个配件
     var accessories = [];
     accessories.push(new BroadlinkA1(this.log,this.config,this.api,"temperature"));
-    // accessories.push(new BroadlinkA1(this.log,this.config,this.api,"light"));
+    accessories.push(new BroadlinkA1(this.log,this.config,this.api,"light"));
     accessories.push(new BroadlinkA1(this.log,this.config,this.api,"humidity"));
     accessories.push(new BroadlinkA1(this.log,this.config,this.api,"airQuality"));
+    accessories.push(new BroadlinkA1(this.log,this.config,this.api,"noise"));
     callback(accessories);// 交给homebridge创建hap的配件并加入到hap桥中
 }
 
